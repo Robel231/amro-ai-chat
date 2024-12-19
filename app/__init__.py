@@ -9,7 +9,7 @@ def create_app():
     """
     Factory function to create and configure the Flask application.
     """
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="../templates", static_folder="../static")
     
     # Load configurations from config.py
     app.config.from_object(Config)
@@ -17,7 +17,7 @@ def create_app():
     # Initialize SocketIO with the app
     socketio.init_app(app)
     
-    # Register routes
+    # Import and register routes
     from app.routes import main_routes
     app.register_blueprint(main_routes)
     
