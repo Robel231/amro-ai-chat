@@ -18,7 +18,7 @@ def create_app():
     socketio.init_app(app)
     
     # Register routes
-    from app.routes import app as main_routes
+    from app.routes import main_routes
     app.register_blueprint(main_routes)
     
     return app

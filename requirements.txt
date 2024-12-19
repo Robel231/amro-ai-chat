@@ -1,6 +1,6 @@
-Flask==2.3.2
-Flask-SocketIO==5.3.4
-python-dotenv==1.0.0
-openai==0.27.8
-eventlet==0.33.3
-gunicorn==20.1.0
+Flask
+Flask-SocketIO
+gevent
+python-dotenv
+openai
+gevent-websocket
