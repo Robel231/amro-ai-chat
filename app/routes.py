@@ -7,7 +7,7 @@ import os
 main_routes = Blueprint('main', __name__)
 
 # Set up the OpenAI API key
-openai.api_key = "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"
+openai.api_key = "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"  # Make sure to use a secure method to store API keys
 
 @main_routes.route('/')
 def index():
@@ -27,14 +27,16 @@ def chat():
         return jsonify({'error': 'No message provided'}), 400
 
     try:
-        # Call OpenAI API to generate a response
-        response = openai.Completion.create(
-            engine="text-davinci-003",  # Specify the model
-            prompt=f"You: {user_message}\nAmro Response:",
+        # Call OpenAI API to generate a response using gpt-3.5-turbo
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # Update to gpt-3.5-turbo
+            messages=[
+                {"role": "user", "content": user_message}
+            ],
             max_tokens=150,
             temperature=0.7
         )
-        ai_response = response.choices[0].text.strip()
+        ai_response = response.choices[0].message['content'].strip()
 
         # Format responses
         labeled_user_message = f"You: {user_message}"
@@ -60,14 +62,16 @@ def handle_message(data):
         return
 
     try:
-        # Call OpenAI API to generate a response
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=f"You: {user_message}\nAmro Response:",
+        # Call OpenAI API to generate a response using gpt-3.5-turbo
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # Update to gpt-3.5-turbo
+            messages=[
+                {"role": "user", "content": user_message}
+            ],
             max_tokens=150,
             temperature=0.7
         )
-        ai_response = response.choices[0].text.strip()
+        ai_response = response.choices[0].message['content'].strip()
 
         # Format responses
         labeled_user_message = f"You: {user_message}"
