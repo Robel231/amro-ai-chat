@@ -19,8 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!userMessage) return;
 
-        // Display user's message
-        appendMessage(userMessage, "user");
+        // Display user's message with "You: " label
+        appendMessage(`You: ${userMessage}`, "user");
         userInput.value = "";
 
         // Display loading indicator for AI response
@@ -36,18 +36,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json();
 
-            // Replace loading indicator with AI's response
+            // Replace loading indicator with AI's response with "Amro Response: " label
             const loadingMessage = document.querySelector(".message.loading");
             if (loadingMessage) loadingMessage.remove();
 
-            appendMessage(data.response, "ai");
+            if (data.response) {
+                appendMessage(data.response, "ai");
+            } else if (data.error) {
+                appendMessage(`Amro Response: ${data.error}`, "ai");
+            }
         } catch (error) {
             console.error("Error:", error);
             // Replace loading indicator with an error message
             const loadingMessage = document.querySelector(".message.loading");
             if (loadingMessage) loadingMessage.remove();
 
-            appendMessage("Oops! Something went wrong. Please try again.", "ai");
+            appendMessage("Amro Response: Oops! Something went wrong. Please try again.", "ai");
         }
     });
 });

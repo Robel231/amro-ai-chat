@@ -1,5 +1,3 @@
-/* styles.css */
-
 /* General Reset */
 body, html {
     margin: 0;
@@ -53,7 +51,7 @@ body, html {
 }
 
 /* Message Bubbles */
-.user-message, .bot-reply {
+.message {
     max-width: 80%;
     padding: 10px 15px;
     border-radius: 10px;
@@ -63,20 +61,47 @@ body, html {
     animation: fadeIn 0.3s ease-in-out;
 }
 
-.user-message {
+/* User Message */
+.message.user {
     align-self: flex-end;
     background: linear-gradient(135deg, #4e73df, #1cc88a);
     color: #fff;
+    position: relative;
 }
 
-.bot-reply {
+.message.user::before {
+    content: "You:";
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #e0f7fa;
+}
+
+/* AI Message */
+.message.ai {
     align-self: flex-start;
     background: linear-gradient(135deg, #d9e3f0, #4e73df);
     color: #000;
+    position: relative;
+}
+
+.message.ai::before {
+    content: "Amro Response:";
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #4e73df;
+}
+
+/* Loading Message */
+.message.loading {
+    align-self: flex-start;
+    font-style: italic;
+    color: #bbb;
 }
 
 /* Chat Input */
-#chat-input {
+#chat-form {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -84,7 +109,7 @@ body, html {
     border-top: 1px solid #444;
 }
 
-#chat-input input {
+#user-input {
     flex: 1;
     padding: 10px 15px;
     font-size: 1rem;
@@ -96,11 +121,11 @@ body, html {
     color: #fff;
 }
 
-#chat-input input::placeholder {
+#user-input::placeholder {
     color: #aaa;
 }
 
-#chat-input button {
+#chat-form button {
     padding: 10px 20px;
     font-size: 1rem;
     border: none;
@@ -111,7 +136,7 @@ body, html {
     transition: background 0.3s;
 }
 
-#chat-input button:hover {
+#chat-form button:hover {
     background: linear-gradient(135deg, #1cc88a, #4e73df);
 }
 
@@ -132,7 +157,7 @@ body, html {
     #chat-container {
         border-radius: 0;
     }
-    #chat-input input, #chat-input button {
+    #user-input, #chat-form button {
         font-size: 0.9rem;
     }
 }
