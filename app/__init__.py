@@ -2,8 +2,8 @@ from flask import Flask
 from flask_socketio import SocketIO
 from config import Config
 
-# Initialize the SocketIO instance
-socketio = SocketIO()
+# Initialize the SocketIO instance with gevent as the async mode
+socketio = SocketIO(async_mode="gevent")
 
 def create_app():
     """
