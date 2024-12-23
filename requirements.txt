@@ -5,3 +5,4 @@ python-dotenv
 openai
 gevent-websocket
 gunicorn
+eventlet>=0.38.2
