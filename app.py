@@ -5,18 +5,15 @@ monkey.patch_all()
 from app import create_app, socketio
 
 # Create the Flask app instance
-flask_app = create_app()  # Rename variable for clarity
+application = create_app()  # Rename `app` to `application` to avoid confusion
 
-# Debugging to verify if the templates directory and index.html exist
+# Debug to check if templates directory exists and index.html is in place
 template_path = os.path.join(os.getcwd(), 'templates', 'index.html')
 if not os.path.exists(template_path):
     print(f"Error: Template not found at {template_path}")
 else:
     print(f"Template found: {template_path}")
 
-# Expose the Flask application instance for Gunicorn
-app = flask_app
-
-# Entry point for running the application
+# Run the app
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=True)
+    socketio.run(application, debug=True)
