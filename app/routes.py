@@ -7,7 +7,7 @@ import os
 main_routes = Blueprint('main', __name__)
 
 # Set up the OpenAI API key
-openai.api_key = "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"  # Make sure to use a secure method to store API keys
+openai.api_key = "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"  # Make sure to use a secure method to store API keys
 
 @main_routes.route('/')
 def index():
