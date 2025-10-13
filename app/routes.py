@@ -1,13 +1,13 @@
 from flask import Blueprint, render_template, request, jsonify
 from app import socketio
-import openai
+from groq import Groq
 import os
 
 # Define a Blueprint for the routes
 main_routes = Blueprint('main', __name__)
 
-# Set up the OpenAI API key
-openai.api_key = "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"  # Make sure to use a secure method to store API keys
+# Set up the Groq API key
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 @main_routes.route('/')
 def index():
@@ -27,16 +27,18 @@ def chat():
         return jsonify({'error': 'No message provided'}), 400
 
     try:
-        # Call OpenAI API to generate a response using gpt-3.5-turbo
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Update to gpt-3.5-turbo
+        # Call Groq API to generate a response
+        chat_completion = client.chat.completions.create(
             messages=[
-                {"role": "user", "content": user_message}
+                {
+                    "role": "user",
+                    "content": user_message,
+                }
             ],
-            max_tokens=150,
-            temperature=0.7
+            model="gemma-7b-it",
         )
-        ai_response = response.choices[0].message['content'].strip()
+        ai_response = chat_completion.choices[0].message.content.strip()
+
 
         # Format responses
         labeled_user_message = f"You: {user_message}"
@@ -46,8 +48,8 @@ def chat():
             'user_message': labeled_user_message,
             'response': labeled_ai_response
         })
-    except openai.error.OpenAIError as e:
-        # Handle errors from the OpenAI API
+    except Exception as e:
+        # Handle errors from the Groq API
         return jsonify({'error': str(e)}), 500
 
 # Example SocketIO event handler
@@ -62,16 +64,17 @@ def handle_message(data):
         return
 
     try:
-        # Call OpenAI API to generate a response using gpt-3.5-turbo
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Update to gpt-3.5-turbo
+        # Call Groq API to generate a response
+        chat_completion = client.chat.completions.create(
             messages=[
-                {"role": "user", "content": user_message}
+                {
+                    "role": "user",
+                    "content": user_message,
+                }
             ],
-            max_tokens=150,
-            temperature=0.7
+            model="gemma-7b-it",
         )
-        ai_response = response.choices[0].message['content'].strip()
+        ai_response = chat_completion.choices[0].message.content.strip()
 
         # Format responses
         labeled_user_message = f"You: {user_message}"
@@ -82,6 +85,6 @@ def handle_message(data):
             'user_message': labeled_user_message,
             'response': labeled_ai_response
         })
-    except openai.error.OpenAIError as e:
+    except Exception as e:
         # Emit the error back to the client
         socketio.emit('response', {'error': str(e)})

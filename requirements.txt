@@ -1,8 +1,10 @@
 Flask==2.3.3
-Flask-SocketIO==5.3.2
-gevent==22.10.2
+Flask-SocketIO==5.3.6 # A more recent stable version
+gevent==23.9.1 # This is a robust recent version
 gevent-websocket==0.10.1
-eventlet>=0.38.2
+eventlet==0.33.3
 gunicorn==21.2.0
 python-dotenv==1.0.0
-openai==0.27.8
+groq
+Flask-SQLAlchemy==3.1.1 # (Assuming you added this for Postgres)
+psycopg2-binary==2.9.9 # (Assuming you added this for Postgres)
