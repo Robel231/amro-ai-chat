@@ -8,10 +8,52 @@ body, html {
     color: #ffffff;
     height: 100%;
     overflow: hidden;
+    position: relative;
+}
+
+/* Binary Fall Background */
+@keyframes binary-fall {
+    0% {
+        transform: translateY(-100%);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+.binary-fall {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.binary-fall span {
+    position: absolute;
+    top: -100px;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(0, 255, 0, 0.8);
+    animation: binary-fall 5s linear infinite;
+}
+
+.binary-fall span:nth-child(odd) {
+    animation-duration: 6s;
+}
+
+.binary-fall span:nth-child(even) {
+    animation-duration: 4s;
 }
 
 /* Chat Container */
 #chat-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -23,6 +65,7 @@ body, html {
     border-radius: 12px;
     background: rgba(30, 30, 48, 0.95);
     overflow: hidden;
+    z-index: 1;
 }
 
 /* Chat Box */

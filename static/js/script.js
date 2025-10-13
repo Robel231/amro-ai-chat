@@ -3,31 +3,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatBox = document.getElementById("chat-box");
     const userInput = document.getElementById("user-input");
 
-    // Function to append messages to the chat box
-    const appendMessage = (message, sender) => {
+    // Function to create and append messages to the chat box
+    const appendMessage = (message, sender, isLoading = false) => {
         const messageDiv = document.createElement("div");
         messageDiv.classList.add("message", sender);
+        if (isLoading) {
+            messageDiv.classList.add("loading");
+        }
         messageDiv.textContent = message;
         chatBox.appendChild(messageDiv);
-        chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+        chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the latest message
     };
 
-    // Handle form submission
-    chatForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const userMessage = userInput.value.trim();
+    // Function to remove the loading indicator
+    const removeLoadingIndicator = () => {
+        const loadingMessage = document.querySelector(".message.loading");
+        if (loadingMessage) loadingMessage.remove();
+    };
 
-        if (!userMessage) return;
-
-        // Display user's message with "You: " label
-        appendMessage(`You: ${userMessage}`, "user");
-        userInput.value = "";
-
-        // Display loading indicator for AI response
-        appendMessage("Amro AI is thinking...", "loading");
-
+    // Function to handle AI responses
+    const handleAIResponse = async (userMessage) => {
         try {
-            // Send user's message to the server
             const response = await fetch("/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -35,23 +31,37 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const data = await response.json();
-
-            // Replace loading indicator with AI's response with "Amro Response: " label
-            const loadingMessage = document.querySelector(".message.loading");
-            if (loadingMessage) loadingMessage.remove();
+            removeLoadingIndicator();
 
             if (data.response) {
-                appendMessage(data.response, "ai");
+                appendMessage(`Amro Response: ${data.response}`, "ai");
             } else if (data.error) {
                 appendMessage(`Amro Response: ${data.error}`, "ai");
+            } else {
+                appendMessage("Amro Response: Unexpected error occurred.", "ai");
             }
         } catch (error) {
             console.error("Error:", error);
-            // Replace loading indicator with an error message
-            const loadingMessage = document.querySelector(".message.loading");
-            if (loadingMessage) loadingMessage.remove();
-
+            removeLoadingIndicator();
             appendMessage("Amro Response: Oops! Something went wrong. Please try again.", "ai");
         }
+    };
+
+    // Handle form submission
+    chatForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const userMessage = userInput.value.trim();
+
+        if (!userMessage) return;
+
+        // Display the user's message
+        appendMessage(`You: ${userMessage}`, "user");
+        userInput.value = "";
+
+        // Display loading indicator
+        appendMessage("Amro AI is thinking...", "ai", true);
+
+        // Process the AI response
+        handleAIResponse(userMessage);
     });
 });
