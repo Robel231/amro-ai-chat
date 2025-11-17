@@ -92,5 +92,5 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-- **Name:** [Your Name]
-- **Email:** [your-email@example.com]
+- **Name:** Robel Shemeles
+- **Email:** Robelshemeles4@gmail.com
